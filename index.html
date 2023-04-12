@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue js Basics</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css" integrity="sha512-SbiR/eusphKoMVVXysTKG/7VseWii+Y3FdHrt0EpKgpToZeemhqHeZeLWLhJutz/2ut2Vw1uQEj2MbRF+TVBUA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        
+            <ul  class="navbar-nav">
+              <li v-for="(link ,index) in links" class="nav-item" :key ="index">
+                <a class="nav-link"
+                :href="link.url">{{link.text}}</a>
+              </li>
+            </ul>
+      </nav>
+        
+    <div id="content" class="container">
+        <h1>{{title}}</h1>
+        <p>{{content}}</p>
+    </div>
+    <script>
+        Vue.createApp({data(){
+            return{
+                links: [{text:'Home' , url:'home.html'},
+            {text:'About',url:'about.html'},
+       { text:'Contact',url:'contact.html'}]
+            }
+        }}).mount('nav')
+        Vue.createApp(
+            {data(){
+                return{
+                    title:"Hello Vue",
+                    content:"Welcome to wonderfull vue world"
+
+                };
+            }}
+        ).mount('#content');
+    </script>
+</body>
+</html>
