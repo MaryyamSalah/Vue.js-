@@ -9,37 +9,77 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav 
+        :class="[`navbar-${theme}`,`bg-${theme}`,'navbar' ,'navbar-expand-lg']">
         
             <ul  class="navbar-nav">
-              <li v-for="(link ,index) in links" class="nav-item" :key ="index">
+              <li v-for="(page ,index) in pages" class="nav-item" :key ="index">
                 <a class="nav-link"
-                :href="link.url">{{link.text}}</a>
+                :class="{active:activePage==index}"
+                :href="page.link.url"
+                :title="`This page goes to ${page.link.text} page`"
+                @click.prevent="activePage=index"
+                
+                >{{page.link.text}}</a>
               </li>
             </ul>
+            <form class="d-flex">
+                <button  type="button" class="btn btn-primary" @click.prevent="changeTheme()">Toggle Navbar</button>
+            </form>
       </nav>
-        
-    <div id="content" class="container">
-        <h1>{{title}}</h1>
-        <p>{{content}}</p>
-    </div>
+        <page-viewer :page="pages[activePage]"></page-viewer>
+   
     <script>
-        Vue.createApp({data(){
-            return{
-                links: [{text:'Home' , url:'home.html'},
-            {text:'About',url:'about.html'},
-       { text:'Contact',url:'contact.html'}]
-            }
-        }}).mount('nav')
-        Vue.createApp(
-            {data(){
+       
+       let app= Vue.createApp({
+            
+            data(){
                 return{
-                    title:"Hello Vue",
-                    content:"Welcome to wonderfull vue world"
+                    activePage:0,
+                    theme:'dark',
+                    pages :[
+                    {
+                    link: {text:'Home' , url:'index.html'},
+                    pageTitle:'Home page' ,
+                    content:'this is Home page'
+                },
+                {
 
-                };
-            }}
-        ).mount('#content');
+                    link: {text:'About' , url:'about.html'},
+                    pageTitle:'About page' ,
+                    content:'this is About page'
+                },
+                {
+                    link: {text:'Contact' , url:'contact.html'},
+                    pageTitle:'Contact page' ,
+                    content:'this is Contact page'
+                },
+                           
+
+              
+               ] }},
+            methods:{
+                changeTheme(){
+                    let theme = 'light';
+                    if(this.theme=='light'){
+                        theme='dark'
+                    }
+                    this.theme=theme;
+                }
+            }
+            
+            });
+            app.component('page-viewer',{
+                props:['page'],
+                template:`
+                <div  class="container">
+        <h1>{{page.pageTitle}}</h1>
+         <p>{{page.content}}</p>
+    </div>
+                
+                `
+            })
+            app.mount('body');
     </script>
 </body>
 </html>
